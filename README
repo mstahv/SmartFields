@@ -1,0 +1,35 @@
+SMART FIELDS ADDON
+
+This add-on tries extend the DefaultFieldFactor in core Vaadin so 
+that you could get a basic UI automatically for domain models - not just 
+for basic datatypes that Vaadin supports by default.
+
+Fields can be used separately or via the SmartFieldFactory. If you
+dare to mix some UI related annotations to you domain classes you can
+add hints about the desired UI (like property order or desired field
+implementation) for fields and the factory with "@SmartField" annotation. 
+
+
+TODO
+
+ * re-think configuration
+ 	* annotations cannot be only option for any configuration
+ 	* remove maps and just guide to extending the default implementation?
+ 	* Should there be classloader wide default factory type or instance?
+ 	  This would allow to configure once at app init - then used automatically.
+ 	* Form implementation: autoconfigured field order and SMF. 
+ 	* Co-operation with FormBinder?
+ * lots of other commonly needed field types
+ 	* IntegerField
+ 	* DoubleField
+ 	* ...
+ * Usability improvements
+   * keyboard shortcuts
+   * focusing
+   * actually thinking out UI for various field impls.
+ * i18n
+ * Improve MapField
+ 	* editable key
+ 	* key uniqueness validation
+ * (Write) Buffering support, this makes implementations much more complicated
+ 
