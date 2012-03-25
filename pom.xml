@@ -1,0 +1,86 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.vaadin.addon</groupId>
+	<artifactId>smartfields</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>SmartFields</name>
+	<description>Generic field implementations that can be used with BeanItems</description>
+	<repositories>
+		<repository>
+			<id>vaadin-addons</id>
+			<url>http://maven.vaadin.com/vaadin-addons</url>
+		</repository>
+
+	</repositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin</artifactId>
+			<version>6.7.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.vaadin.addon</groupId>
+			<artifactId>propertytranslator</artifactId>
+			<version>0.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.vaadin.addons</groupId>
+			<artifactId>customfield</artifactId>
+			<version>0.9.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-servlet</artifactId>
+			<scope>test</scope>
+			<version>8.1.1.v20120215</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>1.7.2</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<source>1.6</source>
+						<target>1.6</target>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<configuration>
+						<archive>
+							<index>true</index>
+							<manifest>
+								<addClasspath>true</addClasspath>
+								<!-- Implementation-Title and Implementation-Version come from the 
+									POM by default -->
+								<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							</manifest>
+							<manifestEntries>
+								<!-- Package format version - do not change -->
+								<Vaadin-Package-Version>1</Vaadin-Package-Version>
+
+								<!-- Add-on specific fields to update -->
+
+								<!-- Implementation-Title and Implementation-Version come from the 
+									POM by default -->
+								<Implementation-Title>SmartFields</Implementation-Title>
+							</manifestEntries>
+						</archive>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+</project>
