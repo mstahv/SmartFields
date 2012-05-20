@@ -2,6 +2,7 @@ package org.vaadin.addon.smartfields;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,8 +26,6 @@ import com.vaadin.ui.TextField;
 public class SmartFieldFactory implements FormFieldFactory, TableFieldFactory {
 
 	private BeanProvider containerProvider;
-
-	private Map<Class<?>, Collection<String>> propertyOrders = new HashMap<Class<?>, Collection<String>>();
 
 	private Map<Class<?>, SubFormConfigurator> subFormConfigurator = new HashMap<Class<?>, SubFormConfigurator>();
 
@@ -85,11 +84,6 @@ public class SmartFieldFactory implements FormFieldFactory, TableFieldFactory {
 			if (fieldType != null) {
 				try {
 					Field field = fieldType.getConstructor().newInstance();
-					if (field instanceof HasVisibleProperties) {
-						HasVisibleProperties hvp = (HasVisibleProperties) field;
-						getContext().getVisibleProperties();
-
-					}
 					return field;
 				} catch (Exception e) {
 					// TODO: handle exception
@@ -110,11 +104,6 @@ public class SmartFieldFactory implements FormFieldFactory, TableFieldFactory {
 					Constructor<? extends Field> constructor = value
 							.getConstructor();
 					Field field = constructor.newInstance();
-					String[] visibleProperties = sf.visibleProperties();
-					if (!visibleProperties[0].isEmpty()) {
-						((HasVisibleProperties) field)
-								.setVisibleProperties(visibleProperties);
-					}
 					return field;
 				} catch (Exception e) {
 					// TODO support for bean-propertyid constructor
@@ -135,7 +124,7 @@ public class SmartFieldFactory implements FormFieldFactory, TableFieldFactory {
 		return null;
 	}
 
-	private static SmartField getAnnotation(BeanItem bi, Object propertyId) {
+	private static SmartField getAnnotation(BeanItem<?> bi, Object propertyId) {
 		try {
 			Method method = Util.getMethod((MethodProperty<?>) bi
 					.getItemProperty(propertyId));
@@ -177,19 +166,6 @@ public class SmartFieldFactory implements FormFieldFactory, TableFieldFactory {
 		this.containerProvider = containerProvider;
 	}
 
-	/**
-	 * 
-	 * @param class1
-	 * @param propertyOrder
-	 */
-	public void setVisibleProperties(Class<?> class1,
-			Collection<String> propertyOrder) {
-		propertyOrders.put(class1, propertyOrder);
-	}
-
-	public Collection<String> getVisibleProperties(Class<?> class1) {
-		return propertyOrders.get(class1);
-	}
 
 	public void setSubFormConfigurator(Class<?> class1, SubFormConfigurator conf) {
 		subFormConfigurator.put(class1, conf);
@@ -199,7 +175,7 @@ public class SmartFieldFactory implements FormFieldFactory, TableFieldFactory {
 		return subFormConfigurator.get(class1);
 	}
 
-	public Form createForm(Class elementType, Item item) {
+	public Form createForm(Class<?> elementType, Item item) {
 		SubFormConfigurator cnf = getSubFormConfigurator(elementType);
 		if (cnf != null) {
 			Form form = cnf.createForm(item);
@@ -209,16 +185,16 @@ public class SmartFieldFactory implements FormFieldFactory, TableFieldFactory {
 		}
 		Form form = new Form();
 		form.setFormFieldFactory(this);
-		Collection<String> propertyOrder = getVisibleProperties(elementType);
+		String[] propertyOrder = getContext().getEditableProperties(elementType);
 		if (propertyOrder == null) {
 			form.setItemDataSource(item);
 		} else {
-			form.setItemDataSource(item, propertyOrder);
+			form.setItemDataSource(item, Arrays.asList(propertyOrder));
 		}
 		return form;
 	}
 
-	public void postConfigureForm(Class elementType, Form form) {
+	public void postConfigureForm(Class<?> elementType, Form form) {
 		SubFormConfigurator cnf = getSubFormConfigurator(elementType);
 		if (cnf != null) {
 			cnf.postConfigureForm(form);

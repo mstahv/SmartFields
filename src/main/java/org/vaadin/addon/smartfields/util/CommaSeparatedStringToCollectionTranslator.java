@@ -8,7 +8,7 @@ import org.vaadin.addon.propertytranslator.PropertyTranslator;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.MethodProperty;
 
-@SuppressWarnings("serial")
+@SuppressWarnings({ "serial", "unchecked" })
 public class CommaSeparatedStringToCollectionTranslator extends
 		PropertyTranslator {
 
@@ -21,6 +21,7 @@ public class CommaSeparatedStringToCollectionTranslator extends
 		super.setPropertyDataSource(newDataSource);
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Object translateFromDatasource(Object arg0) {
 		Collection c = (Collection) arg0;
@@ -36,6 +37,7 @@ public class CommaSeparatedStringToCollectionTranslator extends
 		return sb.toString();
 	}
 
+	@SuppressWarnings({ "rawtypes" })
 	@Override
 	public Object translateToDatasource(Object arg0) throws Exception {
 		String[] split = arg0.toString().split(getSeparator());
@@ -47,7 +49,7 @@ public class CommaSeparatedStringToCollectionTranslator extends
 		return value;
 	}
 
-	private String getSeparator() {
+	protected String getSeparator() {
 		return ",";
 	}
 

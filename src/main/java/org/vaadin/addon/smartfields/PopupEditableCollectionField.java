@@ -35,7 +35,7 @@ import com.vaadin.ui.themes.Reindeer;
  * TODO improve localization
  */
 @SuppressWarnings({ "rawtypes", "serial" })
-public class PopupEditableCollectionField extends CustomField implements HasVisibleProperties, HasFieldFactory {
+public class PopupEditableCollectionField extends CustomField implements HasFieldFactory {
 
 	AbsoluteLayout layout = new AbsoluteLayout();
 
@@ -122,6 +122,9 @@ public class PopupEditableCollectionField extends CustomField implements HasVisi
 		bc = new BeanItemContainer((Class) elementType, collection);
 
 		table.setContainerDataSource(bc);
+		if(visibleProperties == null) {
+			visibleProperties = getFieldFactory().getContext().getVisibleProperties(elementType);
+		}
 		if(visibleProperties != null) {
 			table.setVisibleColumns(getVisibleProperties());
 		}
@@ -166,11 +169,6 @@ public class PopupEditableCollectionField extends CustomField implements HasVisi
 	}
 
 	@Override
-	public void setVisibleProperties(String... visibleProperties) {
-		this.visibleProperties = visibleProperties;
-	}
-
-	@Override
 	public void setFieldFactory(SmartFieldFactory smartFieldFactory) {
 		this.fieldFactory = smartFieldFactory;
 	}
@@ -196,6 +194,10 @@ public class PopupEditableCollectionField extends CustomField implements HasVisi
 
 	public void setEditorWindowCaption(String editorWindowCaption) {
 		this.editorWindowCaption = editorWindowCaption;
+	}
+
+	public void setVisibleProperties(String... visibleProperties) {
+		this.visibleProperties = visibleProperties;
 	}
 
 }

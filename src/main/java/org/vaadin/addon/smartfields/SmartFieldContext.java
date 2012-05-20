@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.vaadin.ui.Field;
-import com.vaadin.ui.AbstractSelect.NewItemHandler;
 
 public class SmartFieldContext {
 
@@ -18,26 +17,33 @@ public class SmartFieldContext {
 	}
 
 	private HashMap<Class<?>, String[]> classToEditableProperties = new HashMap<Class<?>, String[]>();
+	private HashMap<Class<?>, String[]> classToVisibleProperties = new HashMap<Class<?>, String[]>();
 
 	private Map<Class<?>, Map<Class<?>, Map<String, Class<? extends Field>>>> overriddenTypes = new HashMap<Class<?>, Map<Class<?>, Map<String, Class<? extends Field>>>>();
 
-	public static final Field HIDDEN_FIELD = (Field) Proxy.newProxyInstance(SmartFieldFactory.class.getClassLoader(), new Class[]{Field.class}, new InvocationHandler() {
-		@Override
-		public Object invoke(Object arg0, Method arg1, Object[] arg2)
-				throws Throwable {
-			return null;
-		}
-	});
+	public static final Field HIDDEN_FIELD = (Field) Proxy.newProxyInstance(
+			SmartFieldFactory.class.getClassLoader(),
+			new Class[] { Field.class }, new InvocationHandler() {
+				@Override
+				public Object invoke(Object arg0, Method arg1, Object[] arg2)
+						throws Throwable {
+					return null;
+				}
+			});
 
 	/**
 	 * Sets which properties of given type are displayed editable in smart
 	 * fields.
 	 * 
-	 * @param class1
+	 * @param class1 the type of which editable properties are being defined
 	 * @param properties
 	 */
 	public void setEditableProperties(Class<?> class1, String... properties) {
 		classToEditableProperties.put(class1, properties);
+	}
+	
+	public void setVisibleProperties(Class<?> class1, String... properties) {
+		classToVisibleProperties.put(class1, properties);
 	}
 
 	/**
@@ -50,7 +56,6 @@ public class SmartFieldContext {
 		if (strings != null) {
 			return strings;
 		}
-		// TODO should have programmatical configurations ?
 		SmartField annotation = class1.getAnnotation(SmartField.class);
 		if (annotation != null) {
 			String[] editableProperties = annotation.editableProperties();
@@ -109,8 +114,18 @@ public class SmartFieldContext {
 		return null;
 	}
 
-	public String[] getVisibleProperties() {
-		// TODO Auto-generated method stub
+	public String[] getVisibleProperties(Class<?> type) {
+		String[] visibleProperties = classToVisibleProperties.get(type);
+		if (visibleProperties != null) {
+			return visibleProperties;
+		}
+		SmartField annotation = type.getAnnotation(SmartField.class);
+		if (annotation != null) {
+			visibleProperties = annotation.visibleProperties();
+			if (!(visibleProperties.length == 1 && visibleProperties[0] == SmartField.ALL)) {
+				return visibleProperties;
+			}
+		}
 		return null;
 	}
 

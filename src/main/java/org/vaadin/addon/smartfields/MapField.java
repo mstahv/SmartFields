@@ -10,17 +10,13 @@ import java.util.Set;
 import org.vaadin.addon.customfield.CustomField;
 import org.vaadin.addon.smartfields.util.Util;
 
-import com.vaadin.data.Container;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanContainer;
 import com.vaadin.data.util.MethodProperty;
 import com.vaadin.ui.AbsoluteLayout;
-import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.DefaultFieldFactory;
 import com.vaadin.ui.PopupView;
 import com.vaadin.ui.PopupView.PopupVisibilityEvent;
 import com.vaadin.ui.PopupView.PopupVisibilityListener;
@@ -87,6 +83,7 @@ public class MapField extends CustomField implements HasFieldFactory {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	private void init(Class<?> type) {
 		this.type = (Class<? extends Map>) type;
 		

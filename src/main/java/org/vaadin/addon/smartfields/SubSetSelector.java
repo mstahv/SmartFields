@@ -25,7 +25,7 @@ import com.vaadin.ui.themes.Reindeer;
 
 /**
  * Selects a set of beans from available choices defined by {@link BeanProvider}
- * . Should work with virtaully any collection type - not just with sets, but
+ * . Should work with virtually any collection type - not just with sets, but
  * same bean can be only once in the collection.
  * 
  * @see #setProvider(BeanProvider)

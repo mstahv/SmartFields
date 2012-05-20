@@ -31,7 +31,7 @@ public class Util {
 			Type returnType = m.getGenericReturnType();
 			ParameterizedType type = (ParameterizedType) returnType;
 			Type[] typeArguments = type.getActualTypeArguments();
-			return (Class) typeArguments[0];
+			return (Class<?>) typeArguments[0];
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -43,7 +43,7 @@ public class Util {
 			return string;
 		} else {
 			try {
-				Constructor constructor = elemType.getConstructor(String.class);
+				Constructor<?> constructor = elemType.getConstructor(String.class);
 				return constructor.newInstance(string);
 			} catch (Exception e) {
 				throw new RuntimeException(e);
@@ -57,7 +57,7 @@ public class Util {
 					Long.class, Float.class, Double.class, Date.class,
 					Number.class));
 
-	public static boolean isBasicType(Class type) {
+	public static boolean isBasicType(Class<?> type) {
 		return SIMPLE_DATA_TYPES.contains(type);
 	}
 

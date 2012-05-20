@@ -56,7 +56,12 @@ public class TestApp extends Application {
 		Form form = new Form();
 		SmartFieldFactory fieldFactory = new SmartFieldFactory();
 		
-		fieldFactory.getContext().setFieldType(TestBean.class, List.class, "persons", PopupEditableCollectionField.class);
+
+		SmartFieldContext smartFieldContext = SmartFieldContext.get();
+		smartFieldContext.setFieldType(TestBean.class, List.class, "persons", PopupEditableCollectionField.class);
+		
+		smartFieldContext.setEditableProperties(Person.class, "firstName", "lastName", "gender", "age");
+		smartFieldContext.setVisibleProperties(Person.class, "firstName", "lastName");
 		
 		form.setFormFieldFactory(fieldFactory);
 		final TestBean bean = new TestBean();
@@ -74,7 +79,7 @@ public class TestApp extends Application {
 			public void buttonClick(ClickEvent event) {
 				
 				String json = new GsonBuilder().setPrettyPrinting().create().toJson(bean);
-				event.getButton().getWindow().showNotification(json);
+				event.getButton().getWindow().showNotification("<small><pre>" + json + "</pre></small>");
 				System.err.print(json);
 			}
 		});

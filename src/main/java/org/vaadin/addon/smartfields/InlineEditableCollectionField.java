@@ -29,7 +29,7 @@ import com.vaadin.ui.themes.Reindeer;
  */
 @SuppressWarnings({ "rawtypes", "serial" })
 public class InlineEditableCollectionField extends CustomField implements
-		HasVisibleProperties, HasFieldFactory, ColumnGenerator {
+		 HasFieldFactory, ColumnGenerator {
 
 	AbsoluteLayout layout = new AbsoluteLayout();
 
@@ -95,6 +95,7 @@ public class InlineEditableCollectionField extends CustomField implements
 		bc = new BeanItemContainer((Class) elementType, collection);
 
 		table.setContainerDataSource(bc);
+		visibleProperties = getFieldFactory().getContext().getVisibleProperties(elementType);
 		if(visibleProperties == null) {
 			visibleProperties = introspectVisiblePropertiesFromDomainClass();
 		}
@@ -105,6 +106,7 @@ public class InlineEditableCollectionField extends CustomField implements
 	}
 
 	private String[] introspectVisiblePropertiesFromDomainClass() {
+		@SuppressWarnings("unchecked")
 		SmartField annotation = (SmartField) elementType.getAnnotation(SmartField.class);
 		if(annotation != null) {
 			return annotation.editableProperties();
@@ -112,10 +114,6 @@ public class InlineEditableCollectionField extends CustomField implements
 		return null;
 	}
 
-	@Override
-	public void setVisibleProperties(String... visibleProperties) {
-		this.visibleProperties = visibleProperties;
-	}
 
 	@Override
 	public void setFieldFactory(SmartFieldFactory smartFieldFactory) {
