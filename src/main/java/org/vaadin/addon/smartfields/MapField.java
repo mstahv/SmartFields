@@ -7,7 +7,6 @@ import java.lang.reflect.Type;
 import java.util.Map;
 import java.util.Set;
 
-import org.vaadin.addon.customfield.CustomField;
 import org.vaadin.addon.smartfields.util.Util;
 
 import com.vaadin.data.Property;
@@ -16,7 +15,10 @@ import com.vaadin.data.util.MethodProperty;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.CustomField;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.PopupView;
 import com.vaadin.ui.PopupView.PopupVisibilityEvent;
 import com.vaadin.ui.PopupView.PopupVisibilityListener;
@@ -59,7 +61,6 @@ public class MapField extends CustomField implements HasFieldFactory {
 	private SmartFieldFactory ff;
 
 	public MapField() {
-		setCompositionRoot(layout);
 		setWidth("100%");
 		setHeight("300px");
 		table.setSizeFull();
@@ -107,7 +108,7 @@ public class MapField extends CustomField implements HasFieldFactory {
 					addEntry();
 					add.setPopupVisible(false);
 				} else {
-					getWindow().showNotification("Fill in key");
+					Notification.show("Fill in key");
 				}
 			}
 		});
@@ -223,6 +224,11 @@ public class MapField extends CustomField implements HasFieldFactory {
 	@Override
 	public void setFieldFactory(SmartFieldFactory smartFieldFactory) {
 		ff = smartFieldFactory;
+	}
+
+	@Override
+	protected Component initContent() {
+		return layout;
 	}
 
 }

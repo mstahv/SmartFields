@@ -5,19 +5,22 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import org.vaadin.addon.customfield.CustomField;
 import org.vaadin.addon.smartfields.util.Util;
 
 import com.vaadin.data.Property;
+import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.MethodProperty;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.CustomField;
 import com.vaadin.ui.Form;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Table;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.Table.ColumnGenerator;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -45,17 +48,17 @@ public class SubSetSelector extends CustomField implements HasFieldFactory {
 	private SmartFieldFactory ff;
 	private List<String> visibleProperties;
 	private HorizontalLayout toprow;
+	private VerticalLayout verticalLayout;
 
 	public SubSetSelector() {
 		setHeight("300px");
-		VerticalLayout verticalLayout = new VerticalLayout();
+		verticalLayout = new VerticalLayout();
 
 		toprow = new HorizontalLayout();
 		toprow.addComponent(cb);
 		toprow.addComponent(newEntity);
 		verticalLayout.addComponent(toprow);
 		verticalLayout.addComponent(table);
-		setCompositionRoot(verticalLayout);
 		verticalLayout.setHeight("100%");
 		verticalLayout.setExpandRatio(table, 1);
 		table.setWidth("100%");
@@ -192,7 +195,7 @@ public class SubSetSelector extends CustomField implements HasFieldFactory {
 					getProvider().persist(elementType, newInstance);
 					selected.add(newInstance);
 					table.addItem(newInstance);
-					window.getParent().removeWindow(window);
+					getUI().removeWindow(window);
 					// fire value change
 					fireValueChange(true);
 				}
@@ -201,19 +204,15 @@ public class SubSetSelector extends CustomField implements HasFieldFactory {
 			cancel.addListener(new Button.ClickListener() {
 				@Override
 				public void buttonClick(ClickEvent event) {
-					window.getParent().removeWindow(window);
+					getUI().removeWindow(window);
 				}
 			});
 			form.getFooter().addComponent(button);
 			form.getFooter().addComponent(cancel);
 
-			window.addComponent(form);
+			window.setContent(form);
 
-			Window w = getWindow();
-			if (w.getParent() != null) {
-				w = w.getParent();
-			}
-			w.addWindow(window);
+			getUI().addWindow(window);
 			form.focus();
 
 		} catch (Exception e) {
@@ -286,5 +285,10 @@ public class SubSetSelector extends CustomField implements HasFieldFactory {
 
 	public void setNewEntityCaption(String newEntityCaption) {
 		newEntity.setCaption(newEntityCaption);
+	}
+
+	@Override
+	protected Component initContent() {
+		return verticalLayout;
 	}
 }

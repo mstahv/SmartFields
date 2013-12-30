@@ -2,7 +2,6 @@ package org.vaadin.addon.smartfields;
 
 import java.util.Collection;
 
-import org.vaadin.addon.customfield.CustomField;
 import org.vaadin.addon.smartfields.util.Util;
 
 import com.vaadin.data.Property;
@@ -11,6 +10,8 @@ import com.vaadin.data.util.MethodProperty;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.CustomField;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.ColumnGenerator;
 import com.vaadin.ui.themes.Reindeer;
@@ -45,7 +46,6 @@ public class InlineEditableCollectionField extends CustomField implements
 	private SmartFieldFactory fieldFactory;
 
 	public InlineEditableCollectionField() {
-		setCompositionRoot(layout);
 		setWidth("100%");
 		setHeight("300px");
 		table.setSizeFull();
@@ -139,6 +139,11 @@ public class InlineEditableCollectionField extends CustomField implements
 		});
 		button.setStyleName(Reindeer.BUTTON_SMALL);
 		return button;
+	}
+
+	@Override
+	protected Component initContent() {
+		return layout;
 	}
 
 }

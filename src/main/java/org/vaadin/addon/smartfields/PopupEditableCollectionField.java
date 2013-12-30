@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.vaadin.addon.customfield.CustomField;
 import org.vaadin.addon.smartfields.util.Util;
 
 import com.vaadin.data.Item;
@@ -16,9 +15,12 @@ import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.CustomField;
 import com.vaadin.ui.Form;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.ColumnGenerator;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.Reindeer;
 
@@ -53,8 +55,9 @@ public class PopupEditableCollectionField extends CustomField implements HasFiel
 	private String closeCaption = "Close";
 	private String editorWindowCaption = null;
 
+	private Window window;
+
 	public PopupEditableCollectionField() {
-		setCompositionRoot(layout);
 		setWidth("100%");
 		setHeight("300px");
 		table.setSizeFull();
@@ -139,18 +142,14 @@ public class PopupEditableCollectionField extends CustomField implements HasFiel
 	}
 
 	protected void editBean(Item object) {
-		Window window = new Window();
+		window = new Window();
 		window.setCaption(getEditorWindowCaption());
 		window.center();
 		window.setWidth("90%");
 		window.setHeight("90%");
 		Form form = createForm(object);
-		window.addComponent(form);
-		Window w = getWindow();
-		if(w.getParent() != null) {
-			w = w.getParent();
-		}
-		w.addWindow(window);
+		window.setContent(form);
+		UI.getCurrent().addWindow(window);
 		fieldFactory.postConfigureForm(elementType, form);
 		form.focus();
 	}
@@ -161,8 +160,7 @@ public class PopupEditableCollectionField extends CustomField implements HasFiel
 		button.addListener(new Button.ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
-				Window w = event.getButton().getWindow();
-				w.getParent().removeWindow(w);
+				UI.getCurrent().removeWindow(window);
 			}});
 		form.getFooter().addComponent(button);
 		return form;
@@ -198,6 +196,11 @@ public class PopupEditableCollectionField extends CustomField implements HasFiel
 
 	public void setVisibleProperties(String... visibleProperties) {
 		this.visibleProperties = visibleProperties;
+	}
+
+	@Override
+	protected Component initContent() {
+		return layout;
 	}
 
 }
