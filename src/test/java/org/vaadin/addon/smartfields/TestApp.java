@@ -1,6 +1,6 @@
 package org.vaadin.addon.smartfields;
 
-
+import java.util.Collection;
 import java.util.List;
 
 import javax.servlet.annotation.WebServlet;
@@ -11,6 +11,9 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import com.google.gson.GsonBuilder;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.data.util.converter.Converter;
+import com.vaadin.data.util.converter.ConverterFactory;
+import com.vaadin.data.util.converter.DefaultConverterFactory;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.Button;
@@ -21,7 +24,7 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 public class TestApp extends UI {
-	
+
 	public static void main(String[] args) throws Exception {
 		startInEmbeddedJetty();
 	}
@@ -38,12 +41,24 @@ public class TestApp extends UI {
 
 	// mapping used to if demo war is built from these sources
 	@WebServlet(urlPatterns = "/*")
-    @VaadinServletConfiguration(productionMode = false, ui = TestApp.class)
+	@VaadinServletConfiguration(productionMode = false, ui = TestApp.class)
 	public static class Servlet extends VaadinServlet {
 	}
 
 	@Override
 	protected void init(VaadinRequest request) {
+		
+		ConverterFactory converterFactory  = new DefaultConverterFactory() {
+			@Override
+			public <PRESENTATION, MODEL> Converter<PRESENTATION, MODEL> createConverter(
+					Class<PRESENTATION> presentationType, Class<MODEL> modelType) {
+				if (Collection.class.isAssignableFrom(modelType) && presentationType == String.class) {
+					return (Converter<PRESENTATION, MODEL>) new CollectionStringConverter();
+				}
+				return super.createConverter(presentationType, modelType);
+			}
+		};
+		getSession().setConverterFactory(converterFactory);
 
 		Form form = new Form();
 		SmartFieldFactory fieldFactory = new SmartFieldFactory();
@@ -57,6 +72,9 @@ public class TestApp extends UI {
 		
 		form.setFormFieldFactory(fieldFactory);
 		final TestBean bean = new TestBean();
+		Person e = new Person();
+		e.setFirstName("Marko");
+		bean.getPersons().add(e);
 		form.setItemDataSource(new BeanItem<TestBean>(bean));
 		
 		
@@ -74,5 +92,4 @@ public class TestApp extends UI {
 		setContent(new VerticalLayout(form,button));
 		
 	}
-
 }

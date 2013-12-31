@@ -6,7 +6,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>SmartFields</name>
 	<description>Generic field implementations that can be used with BeanItems</description>
-	
+
 	<properties>
 		<vaadin.version>7.1.8</vaadin.version>
 	</properties>
@@ -19,26 +19,32 @@
 	</repositories>
 
 	<dependencies>
-			<dependency>
+		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-server</artifactId>
 			<version>${vaadin.version}</version>
 			<scope>provided</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.3</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-client</artifactId>
+			<artifactId>vaadin-client-compiled</artifactId>
 			<version>${vaadin.version}</version>
-			<scope>provided</scope>
+			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-themes</artifactId>
 			<version>${vaadin.version}</version>
 			<scope>test</scope>
 		</dependency>
-	
+
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-servlet</artifactId>
@@ -69,9 +75,9 @@
 					<artifactId>maven-jar-plugin</artifactId>
 					<configuration>
 						<archive>
-							<index>true</index>
+							<!-- <index>true</index> -->
 							<manifest>
-								<addClasspath>true</addClasspath>
+								<!-- <addClasspath>true</addClasspath> -->
 								<!-- Implementation-Title and Implementation-Version come from the 
 									POM by default -->
 								<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
