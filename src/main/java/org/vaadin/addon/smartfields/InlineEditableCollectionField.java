@@ -50,7 +50,7 @@ public class InlineEditableCollectionField extends CustomField implements
 		setHeight("300px");
 		table.setSizeFull();
 		table.setEditable(true);
-		layout.addComponent(table);
+		layout.addComponent(table,"top:0,bottom:0;left:0;right:0;");
 		layout.addComponent(add, "top:2px; right: 4px;");
 
 		add.addStyleName(Reindeer.BUTTON_SMALL);

@@ -14,12 +14,14 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.converter.Converter;
 import com.vaadin.data.util.converter.ConverterFactory;
 import com.vaadin.data.util.converter.DefaultConverterFactory;
+import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Form;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
@@ -79,13 +81,13 @@ public class TestApp extends UI {
 		
 		
 		Button button = new Button("Show state");
-		button.addListener(new Button.ClickListener() {
+		button.addClickListener(new Button.ClickListener() {
 			
 			@Override
 			public void buttonClick(ClickEvent event) {
 				
 				String json = new GsonBuilder().setPrettyPrinting().create().toJson(bean);
-				Notification.show("<small><pre>" + json + "</pre></small>");
+				new Notification("State", "<small><pre>" + json + "</pre></small>", Type.ERROR_MESSAGE , true).show(Page.getCurrent());
 				System.err.print(json);
 			}
 		});

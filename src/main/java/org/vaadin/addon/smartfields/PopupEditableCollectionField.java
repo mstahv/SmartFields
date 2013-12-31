@@ -61,11 +61,11 @@ public class PopupEditableCollectionField extends CustomField implements HasFiel
 		setWidth("100%");
 		setHeight("300px");
 		table.setSizeFull();
-		layout.addComponent(table);
+		layout.addComponent(table,"top:0;bottom:0;left:0;right:0;");
 		layout.addComponent(add, "top:2px; right: 4px;");
 
 		add.addStyleName(Reindeer.BUTTON_SMALL);
-		add.addListener(new Button.ClickListener() {
+		add.addClickListener(new Button.ClickListener() {
 			@SuppressWarnings("unchecked")
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -85,7 +85,7 @@ public class PopupEditableCollectionField extends CustomField implements HasFiel
 			public Object generateCell(Table source, final Object itemId,
 					Object columnId) {
 				Button button = new Button("-");
-				button.addListener(new Button.ClickListener() {
+				button.addClickListener(new Button.ClickListener() {
 					@Override
 					public void buttonClick(ClickEvent event) {
 						collection.remove(itemId);
@@ -97,7 +97,7 @@ public class PopupEditableCollectionField extends CustomField implements HasFiel
 			}
 		});
 
-		table.addListener(new ItemClickListener() {
+		table.addItemClickListener(new ItemClickListener() {
 			@Override
 			public void itemClick(ItemClickEvent event) {
 				editBean(event.getItem());
@@ -157,7 +157,7 @@ public class PopupEditableCollectionField extends CustomField implements HasFiel
 	protected Form createForm(Item item) {
 		Form form = fieldFactory.createForm(elementType, item);
 		Button button = new Button(getCloseCaption());
-		button.addListener(new Button.ClickListener() {
+		button.addClickListener(new Button.ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				UI.getCurrent().removeWindow(window);

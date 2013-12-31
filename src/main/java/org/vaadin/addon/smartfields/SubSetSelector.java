@@ -69,7 +69,7 @@ public class SubSetSelector extends CustomField implements HasFieldFactory {
 			public Object generateCell(Table source, final Object itemId,
 					Object columnId) {
 				Button button = new Button(getDeleteButtonCaption());
-				button.addListener(new Button.ClickListener() {
+				button.addClickListener(new Button.ClickListener() {
 					@Override
 					public void buttonClick(ClickEvent event) {
 						availableContainer.addItem(itemId);
@@ -85,7 +85,7 @@ public class SubSetSelector extends CustomField implements HasFieldFactory {
 
 		});
 		cb.setInputPrompt("Add to selection...");
-		cb.addListener(new ValueChangeListener() {
+		cb.addValueChangeListener(new ValueChangeListener() {
 			@Override
 			public void valueChange(
 					com.vaadin.data.Property.ValueChangeEvent event) {
@@ -102,7 +102,7 @@ public class SubSetSelector extends CustomField implements HasFieldFactory {
 		});
 		cb.setImmediate(true);
 
-		newEntity.addListener(new Button.ClickListener() {
+		newEntity.addClickListener(new Button.ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				addEntity();
@@ -189,7 +189,7 @@ public class SubSetSelector extends CustomField implements HasFieldFactory {
 			}
 
 			Button button = new Button("Save and add");
-			button.addListener(new Button.ClickListener() {
+			button.addClickListener(new Button.ClickListener() {
 				@Override
 				public void buttonClick(ClickEvent event) {
 					getProvider().persist(elementType, newInstance);
@@ -201,7 +201,7 @@ public class SubSetSelector extends CustomField implements HasFieldFactory {
 				}
 			});
 			Button cancel = new Button("Cancel");
-			cancel.addListener(new Button.ClickListener() {
+			cancel.addClickListener(new Button.ClickListener() {
 				@Override
 				public void buttonClick(ClickEvent event) {
 					getUI().removeWindow(window);

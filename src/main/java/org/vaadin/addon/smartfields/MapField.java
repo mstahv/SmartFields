@@ -64,13 +64,13 @@ public class MapField extends CustomField implements HasFieldFactory {
 		setWidth("100%");
 		setHeight("300px");
 		table.setSizeFull();
-		layout.addComponent(table);
+		layout.addComponent(table,"top:0;left:0;right:0;bottom:0;");
 		layout.addComponent(add, "top:3px; right: 4px;");
 		table.addGeneratedColumn("DELETE", new ColumnGenerator() {
 			@Override
 			public Object generateCell(Table source, final Object itemId, Object columnId) {
 				Button button = new Button("-");
-				button.addListener(new Button.ClickListener() {
+				button.addClickListener(new Button.ClickListener() {
 					@Override
 					public void buttonClick(ClickEvent event) {
 						map.remove(itemId);
@@ -88,7 +88,7 @@ public class MapField extends CustomField implements HasFieldFactory {
 	private void init(Class<?> type) {
 		this.type = (Class<? extends Map>) type;
 		
-		add.addListener(new PopupVisibilityListener() {
+		add.addPopupVisibilityListener(new PopupVisibilityListener() {
 			@Override
 			public void popupVisibilityChange(PopupVisibilityEvent event) {
 				if(event.isPopupVisible()) {
@@ -99,7 +99,7 @@ public class MapField extends CustomField implements HasFieldFactory {
 		});
 
 		addView.addComponent(newKey);
-		newKey.addListener(new Property.ValueChangeListener() {
+		newKey.addValueChangeListener(new Property.ValueChangeListener() {
 			
 			@Override
 			public void valueChange(
